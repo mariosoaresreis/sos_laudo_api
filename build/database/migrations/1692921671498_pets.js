@@ -1,0 +1,31 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Schema_1 = __importDefault(require("@ioc:Adonis/Lucid/Schema"));
+class default_1 extends Schema_1.default {
+    constructor() {
+        super(...arguments);
+        this.tableName = 'pets';
+    }
+    async up() {
+        this.schema.createTable(this.tableName, (table) => {
+            table.increments('id');
+            table.string('name');
+            table.date('birth');
+            table.string('gender');
+            table.integer('owner_id').references('id').inTable('users');
+            table.integer('species_id').references('id').inTable('species');
+            table.integer('breed_id');
+            table.text('image');
+            table.timestamp('created_at', { useTz: true });
+            table.timestamp('updated_at', { useTz: true });
+        });
+    }
+    async down() {
+        this.schema.dropTable(this.tableName);
+    }
+}
+exports.default = default_1;
+//# sourceMappingURL=1692921671498_pets.js.map

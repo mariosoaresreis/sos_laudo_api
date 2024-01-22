@@ -1,0 +1,1 @@
+{"version":3,"file":"ExamBodyPartsController.js","sourceRoot":"","sources":["../../../../app/Controllers/Http/ExamBodyPartsController.ts"],"names":[],"mappings":";;;;;AACA,uFAA+D;AAE/D,MAAqB,uBAAuB;IAEnC,KAAK,CAAC,KAAK,CAAC,EAAwB;QAEzC,MAAM,SAAS,GAAG,MAAM,4BAAkB,CAAC,GAAG,EAAE,CAAA;QAChD,OAAO,SAAS,CAAA;IAElB,CAAC;CAEF;AATD,0CASC"}
