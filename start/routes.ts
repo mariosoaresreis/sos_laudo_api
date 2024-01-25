@@ -220,6 +220,12 @@ Route.group(() => {
   Route.delete('/cms/:id', 'CmsController.destroy')
 }).middleware('auth')
 
+Route.group(() => {  
+  Route.get('/pagBankOrder', 'PaymentBoletoController.index')
+  Route.post('/pagBankOrder', 'CmsController.show')  
+})
+
+
 Route.group(() => {
   Route.get('/cms', 'CmsController.index')
 })
