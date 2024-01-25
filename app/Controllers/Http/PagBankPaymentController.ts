@@ -6,7 +6,7 @@ import { sendEmailPayment } from './EmailController';
 export default class PagBankPaymentController {
 
   public async index({}: HttpContextContract) {
-      const url = process.env.SAND_BOX_BOLETO_URL
+      const url = process.env.SAND_BOX_PAYMENT_PAGBANK_URL
       const token = process.env.TKN_SANDBOX
 
       const options = {
@@ -19,38 +19,35 @@ export default class PagBankPaymentController {
 
       const response = await axios.post(
         `${url}`,
-        {
-            
-                reference_id: 'Compra de 1 Crédito(s) - Administrador',
-                customer: {
-                  name: 'Jose da Silva',
-                  email: 'adm@email.com',
-                  tax_id: '12345678909'
-                },      
-               shipping: {
-                          address: {
-                          country: 'BRA',
-                          region: '-',
-                          region_code: 'SP',
-                            city: '-',
-                            postal_code: '00000000',
-                            street: 'Produto Digital',
-                            number: '-',
-                            locality: '-'
-                          }
+        {  
+            charges: [
+            {
+              amount: {
+                value: 1100,
+                currency: 'BRL'
+              },
+              payment_method: {
+                card: {
+                  holder: {
+                    name: 'Jose da Silva'
+                  },
+                  encrypted: 'V++53ir0qvoK/rUSzNjCqP8Hz9ZTa+HohR779n63CV+NvCeYj4J4lQevL4NKN7Di3BxKQGqfQW5cfS7/4rHw4w8URuOV/j/mGau2GXxkKQ6/szJ6BQr//C4e4XgfCHDwcONQhuPDHMdOB1C+4lzyBbsPJUZ/8TUQrxhMMiMFjwGeg62uf7cUqdFjp+Q5dqJXwhLgH3d1EoX+JKStBLqVzF0lW3gHtFOyfvFhuxxBgB0xrzTKfbTqnL5aSYBoGXRFM0gLodMm6knx7bW+syThxyQffnaigCwj2aNohsu+fuXII+3WnlgrHQxaBx3ChRuWKy+loV2L2USiGulp/bPEcg==',
+                  //number: '5240082975622454',
+                  //exp_month: 3,
+                  //exp_year: 2026,
+                  //security_code: '123',
+                  store: false
                 },
-                 items: [
-                  {
-                      reference_id: 'referencia do item',
-                      name: 'nome do item',
-                      quantity: 1,
-                      unit_amount: 500
-                  }
-                  ],
-                  notification_urls: [
-                      "https://meusite.com/notificacoes"
-                   ]
-      },
+                type: 'CREDIT_CARD',
+                installments: 1,
+                capture: true,
+                soft_descriptor: 'nome fatura'
+              },
+              reference_id: 'ref_pag',
+              description: 'descrição da cobrança'
+            }
+          ]
+        },
         options,
       );
     
@@ -81,82 +78,28 @@ export default class PagBankPaymentController {
     
       const response = await axios.post(
         `${url}`,
-/*          {
-            reference_id: decriptData.reference_id + ' - ' + userName,
-            customer: {
-              name: decriptData.customer.name,
-              email: userEmail,
-              tax_id: decriptData.customer.tax_id,
-            },
+        {  
             charges: [
-              {
-                reference_id: decriptData.reference_id + ' - ' + userName,
-                description: decriptData.reference_id,
-                amount: {
-                  value: decriptData.charges.amount.value,
-                  currency: "BRL"
+            {
+              amount: {
+                value: 1100,
+                currency: 'BRL'
+              },
+              payment_method: {
+                card: {
+                  encrypted: 'V++53ir0qvoK/rUSzNjCqP8Hz9ZTa+HohR779n63CV+NvCeYj4J4lQevL4NKN7Di3BxKQGqfQW5cfS7/4rHw4w8URuOV/j/mGau2GXxkKQ6/szJ6BQr//C4e4XgfCHDwcONQhuPDHMdOB1C+4lzyBbsPJUZ/8TUQrxhMMiMFjwGeg62uf7cUqdFjp+Q5dqJXwhLgH3d1EoX+JKStBLqVzF0lW3gHtFOyfvFhuxxBgB0xrzTKfbTqnL5aSYBoGXRFM0gLodMm6knx7bW+syThxyQffnaigCwj2aNohsu+fuXII+3WnlgrHQxaBx3ChRuWKy+loV2L2USiGulp/bPEcg==',
+                  store: false
                 },
-                payment_method: {
-                  type: "BOLETO",
-                  boleto: {
-                    due_date: decriptData.charges.payment_method.boleto.due_date,
-                    instruction_lines: {
-                      line_1: "Definir mensagem da linha 1",
-                      line_2: "Definir mensagem da linha 2",
-                    },
-                    holder: {
-                      name: decriptData.customer.name,
-                      tax_id: decriptData.customer.tax_id,
-                      email: userEmail,
-                      address: {
-                        country: "Brasil",
-                        region: "-",
-                        region_code: "SP",
-                        city: "-",
-                        postal_code: "00000000",
-                        street: "Produto Digital",
-                        number: "-",
-                        locality: "-"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }*/
-          {
-            
-            reference_id: 'Compra de 1 Crédito(s) - Administrador',
-            customer: {
-              name: 'Jose da Silva',
-              email: 'adm@email.com',
-              tax_id: '12345678909'
-            },      
-           shipping: {
-                      address: {
-                      country: 'BRA',
-                      region: '-',
-                      region_code: 'SP',
-                        city: '-',
-                        postal_code: '00000000',
-                        street: 'Produto Digital',
-                        number: '-',
-                        locality: '-'
-                      }
-            },
-             items: [
-              {
-                  reference_id: 'referencia do item',
-                  name: 'nome do item',
-                  quantity: 1,
-                  unit_amount: 500
-              }
-              ],
-              notification_urls: [
-                  "https://meusite.com/notificacoes"
-               ]
-  }
-          ,
+                type: 'CREDIT_CARD',
+                installments: 1,
+                capture: true,
+                soft_descriptor: 'nome fatura'
+              },
+              reference_id: 'ref_pag',
+              description: 'descrição da cobrança'
+            }
+          ]
+        },
         options,
       );
 
