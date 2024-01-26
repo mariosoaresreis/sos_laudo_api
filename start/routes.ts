@@ -221,10 +221,14 @@ Route.group(() => {
 }).middleware('auth')
 
 Route.group(() => {  
-  Route.get('/pagBankOrder', 'PaymentBoletoController.index')
-  Route.post('/pagBankOrder', 'CmsController.show')  
+  Route.get('/pagBankOrder', 'PagBankOrderController.index')
+  Route.post('/pagBankOrder', 'PagBankOrderController.create')  
 }).middleware('auth')
 
+Route.group(() => {  
+  Route.get('/pagBankPayment', 'PagBankPaymentController.index')
+  Route.post('/pagBankPayment', 'PagBankPaymentController.create')  
+}).middleware('auth')
 
 Route.group(() => {
   Route.get('/cms', 'CmsController.index')
