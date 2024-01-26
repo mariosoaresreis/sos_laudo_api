@@ -6,13 +6,13 @@ import { sendEmailPayment } from './EmailController';
 export default class PagBankOrderController {
 
   public async index({}: HttpContextContract) {
-      const url = process.env.SAND_BOX_BOLETO_URL
+      const url = process.env.SAND_BOX_ORDER_PAGBANK_URL
       const token = process.env.TKN_SANDBOX
 
       const options = {
         headers: {
           Authorization: `Bearer ${token}`,
-          // 'accept': 'application/json',
+          //'accept': 'application/json',
           'Content-Type': 'application/json'
         },
       };
@@ -68,7 +68,7 @@ export default class PagBankOrderController {
       const userName = auth?.user?.name
       const userEmail = auth?.user?.email
 
-      const url = process.env.SAND_BOX_PAYMENT_PAGBANK_URL
+      const url = process.env.SAND_BOX_ORDER_PAGBANK_URL
       const token = process.env.TKN_SANDBOX
 
       const options = {
@@ -81,89 +81,45 @@ export default class PagBankOrderController {
     
       const response = await axios.post(
         `${url}`,
-/*          {
-            reference_id: decriptData.reference_id + ' - ' + userName,
+          {            
+            reference_id: decriptData.reference_id,
             customer: {
               name: decriptData.customer.name,
-              email: userEmail,
-              tax_id: decriptData.customer.tax_id,
-            },
-            charges: [
-              {
-                reference_id: decriptData.reference_id + ' - ' + userName,
-                description: decriptData.reference_id,
-                amount: {
-                  value: decriptData.charges.amount.value,
-                  currency: "BRL"
-                },
-                payment_method: {
-                  type: "BOLETO",
-                  boleto: {
-                    due_date: decriptData.charges.payment_method.boleto.due_date,
-                    instruction_lines: {
-                      line_1: "Definir mensagem da linha 1",
-                      line_2: "Definir mensagem da linha 2",
-                    },
-                    holder: {
-                      name: decriptData.customer.name,
-                      tax_id: decriptData.customer.tax_id,
-                      email: userEmail,
-                      address: {
-                        country: "Brasil",
-                        region: "-",
-                        region_code: "SP",
-                        city: "-",
-                        postal_code: "00000000",
-                        street: "Produto Digital",
-                        number: "-",
-                        locality: "-"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }*/
-          {
-            
-            reference_id: 'Compra de 1 Crédito(s) - Administrador',
-            customer: {
-              name: 'Jose da Silva',
-              email: 'adm@email.com',
-              tax_id: '12345678909'
+              email: decriptData.customer.email,
+              tax_id: decriptData.customer.tax_id
             },      
            shipping: {
                       address: {
-                      country: 'BRA',
-                      region: '-',
-                      region_code: 'SP',
-                        city: '-',
-                        postal_code: '00000000',
-                        street: 'Produto Digital',
-                        number: '-',
+                        country: decriptData.shipping.address.country,
+                        region: '-',
+                        region_code: decriptData.shipping.address.region_code,
+                        city: decriptData.shipping.address.city,
+                        postal_code: decriptData.shipping.address.postal_code,
+                        street: decriptData.shipping.address.street,
+                        number: decriptData.shipping.address.number,
                         locality: '-'
                       }
             },
-             items: [
+             items: decriptData.items /*[
               {
                   reference_id: 'referencia do item',
                   name: 'nome do item',
                   quantity: 1,
                   unit_amount: 500
               }
-              ],
+              ]*/,
               notification_urls: [
                   "https://meusite.com/notificacoes"
                ]
-  }
-          ,
+        }
+        ,
         options,
       );
 
       if ( response.status === 200 ){
         const value = decriptData.charges.amount.value
         const convertedValue = (value / 100).toFixed(2)
-        sendEmailPayment(userName!, userEmail!, 'BOLETO', convertedValue)
+        sendEmailPayment(userName!, userEmail!, 'PAGBANK', convertedValue)
       }
 
       return { 
