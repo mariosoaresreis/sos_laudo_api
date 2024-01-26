@@ -223,7 +223,7 @@ Route.group(() => {
 Route.group(() => {  
   Route.get('/pagBankOrder', 'PaymentBoletoController.index')
   Route.post('/pagBankOrder', 'CmsController.show')  
-})
+}).middleware('auth')
 
 
 Route.group(() => {
